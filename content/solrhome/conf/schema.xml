@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<schema name="example" version="1.5">
+    <field name="_version_" type="long" indexed="true" stored="true"/>
+
+    <field name="id" type="string" indexed="true" stored="true" required="true" multiValued="false" /> 
+
+    <field name="category" type="text_ik" indexed="true" stored="true"/>
+    <field name="title" type="text_ik" indexed="true" stored="true" multiValued="true"/>
+    <field name="author" type="text_ik" indexed="true" stored="true"/>
+    <field name="content" type="text_ik" indexed="false" stored="true" multiValued="true"/>
+    <field name="notes" type="text_ik" indexed="true" stored="true"/>
+    <field name="translate" type="text_ik" indexed="true" stored="true"/>
+    <field name="description" type="text_ik" indexed="true" stored="true" multiValued="true"/>
+
+    <field name="quotes" type="text_ik" indexed="true" stored="true"/>
+    <field name="brief" type="text_ik" indexed="true" stored="true"/>
+
+    <field name="text" type="text_ik" indexed="true" stored="false" multiValued="true"/>
+ 
+    <uniqueKey>id</uniqueKey>
+
+    <copyField source="author" dest="text"/>
+    <copyField source="title" dest="text"/>
+    <copyField source="content" dest="text"/>
+    <copyField source="notes" dest="text"/>
+    <copyField source="translate" dest="text"/>
+    <copyField source="description" dest="text"/>
+    <copyField source="quotes" dest="text"/>
+    <copyField source="brief" dest="text"/>
+
+    <fieldType name="string" class="solr.StrField" sortMissingLast="true" />
+    <fieldType name="long" class="solr.TrieLongField" precisionStep="0" positionIncrementGap="0"/>
+    <!--配置IK分词器-->
+    <fieldType name="text_ik" class="solr.TextField">
+        <!--索引时候的分词器-->
+          <analyzer type="index" isMaxWordLength="false" class="org.wltea.analyzer.lucene.IKAnalyzer"/>
+        <!--查询时候的分词器-->
+        <analyzer type="query" isMaxWordLength="true" class="org.wltea.analyzer.lucene.IKAnalyzer"/>
+    </fieldType>
+</schema>
